@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HolyShop — Купівля товарів</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg: #f0f4f8;
+  --white: #ffffff;
+  --sidebar-w: 220px;
+  --orange: #f97316;
+  --orange-light: #fed7aa;
+  --blue: #3b82f6;
+  --blue-light: #dbeafe;
+  --blue-active: #2563eb;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --badge-red: #ef4444;
+  --badge-orange: #f97316;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.15);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* TOP BAR */
+.topbar {
+  background: linear-gradient(135deg, #ff8c00 0%, #f97316 50%, #ea580c 100%);
+  height: 6px;
+}
+
+/* HEADER */
+header {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.logo-text {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.logo-text span { color: var(--orange); }
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-badge {
+  background: var(--blue-light);
+  color: var(--blue-active);
+  border: 1px solid #bfdbfe;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* LAYOUT */
+.layout {
+  display: flex;
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 16px;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+}
+
+.sidebar-section {
+  margin-bottom: 20px;
+}
+
+.sidebar-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+
+.server-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.server-btn.active {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: white;
+  box-shadow: 0 4px 14px rgba(249,115,22,0.4);
+}
+
+.server-btn.inactive {
+  background: var(--white);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+}
+
+.server-btn:hover:not(.active) {
+  border-color: var(--orange);
+  background: #fff7ed;
+}
+
+.server-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.cat-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  transition: all 0.2s;
+  background: var(--white);
+  color: var(--text);
+}
+
+.cat-btn:hover { background: var(--blue-light); color: var(--blue-active); }
+
+.cat-btn.active {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  box-shadow: 0 4px 14px rgba(59,130,246,0.35);
+}
+
+.cat-icon { font-size: 1.1rem; }
+
+/* MAIN CONTENT */
+.main {
+  flex: 1;
+  min-width: 0;
+}
+
+.main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.main-title {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--text);
+}
+
+/* PRODUCTS GRID */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.product-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: all 0.2s;
+  cursor: pointer;
+  border: 2px solid transparent;
+  position: relative;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--blue);
+}
+
+.product-card.selected {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.2), var(--shadow-lg);
+}
+
+.product-img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-red { background: var(--badge-red); color: white; }
+.badge-orange { background: var(--badge-orange); color: white; }
+.badge-blue { background: var(--blue); color: white; }
+
+.product-info {
+  padding: 10px 12px 12px;
+}
+
+.product-name {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.product-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.product-price {
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.price-from {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 1px;
+}
+
+.btn-buy {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-buy:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transform: scale(1.05);
+}
+
+/* CATEGORY PANELS */
+.cat-panel { display: none; }
+.cat-panel.active { display: block; }
+
+/* MODAL OVERLAY */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,23,42,0.6);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 440px;
+  width: 92%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+@keyframes popIn {
+  from { opacity:0; transform: scale(0.85) translateY(20px); }
+  to { opacity:1; transform: scale(1) translateY(0); }
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--text-muted);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+
+.modal-close:hover { background: var(--bg); color: var(--text); }
+
+.modal-product-name {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 4px;
+  padding-right: 40px;
+}
+
+.modal-price-tag {
+  display: inline-block;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: white;
+  border-radius: 10px;
+  padding: 4px 14px;
+  font-size: 1.1rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+}
+
+.modal-section {
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.modal-section-title {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.req-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.req-row:last-child { margin-bottom: 0; }
+
+.req-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.req-val {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.copy-btn {
+  background: var(--blue-light);
+  color: var(--blue-active);
+  border: none;
+  border-radius: 6px;
+  padding: 3px 9px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover { background: var(--blue); color: white; }
+
+.form-group { margin-bottom: 12px; }
+
+.form-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus { border-color: var(--blue); }
+
+.warning-box {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #9a3412;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.btn-confirm {
+  width: 100%;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+
+.btn-confirm:hover { background: linear-gradient(135deg, #16a34a, #15803d); transform: translateY(-1px); }
+
+/* SUCCESS */
+.success-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,23,42,0.7);
+  z-index: 1001;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+}
+
+.success-overlay.active { display: flex; }
+
+.success-box {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 360px;
+  width: 90%;
+  text-align: center;
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.success-emoji { font-size: 3.5rem; margin-bottom: 14px; display: block; }
+
+.success-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.success-text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  line-height: 1.7;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  background: var(--text);
+  color: white;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  z-index: 9999;
+  transform: translateY(80px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* FOOTER */
+footer {
+  background: #1e293b;
+  color: #94a3b8;
+  padding: 30px 28px;
+  margin-top: 40px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-logo { display: flex; align-items: center; gap: 10px; }
+.footer-logo-icon {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+}
+
+.footer-brand { font-size: 1.1rem; font-weight: 900; color: white; }
+.footer-sub { font-size: 0.72rem; color: #64748b; }
+.footer-copy { font-size: 0.75rem; line-height: 1.7; max-width: 340px; }
+.footer-nav h4 { font-size: 0.8rem; font-weight: 800; color: white; margin-bottom: 8px; }
+.footer-nav a { display: block; font-size: 0.75rem; color: #64748b; text-decoration: none; margin-bottom: 4px; }
+.footer-nav a:hover { color: var(--orange); }
+.footer-payments h4 { font-size: 0.8rem; font-weight: 800; color: white; margin-bottom: 8px; }
+.footer-payments p { font-size: 0.75rem; color: #64748b; }
+
+@media (max-width: 700px) {
+  .layout { flex-direction: column; }
+  .sidebar { width: 100%; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar"></div>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🌍</div>
+    <div class="logo-text">Holy<span>Shop</span></div>
+  </div>
+  <div class="header-right">
+    <div class="header-badge">🛡 Анархія 1.16.5</div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Оберіть сервер</div>
+      <button class="server-btn active" onclick="selectServer(this, 'Лайт Анархія')">
+        <span class="server-icon">🐝</span>
+        <span>Лайт Анархія</span>
+      </button>
+      <button class="server-btn inactive" onclick="selectServer(this, 'Класик Анархія')">
+        <span class="server-icon">🧱</span>
+        <span>Класик Анархія</span>
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Категорії</div>
+      <button class="cat-btn active" onclick="switchCat('privileges', this)">
+        <span>🏆 Привілеї</span>
+      </button>
+      <button class="cat-btn" onclick="switchCat('cases_priv', this)">
+        <span>🎁 Кейс із привілеєю</span>
+      </button>
+      <button class="cat-btn" onclick="switchCat('cases_sap', this)">
+        <span>💎 Кейс із сапфірами</span>
+      </button>
+      <button class="cat-btn" onclick="switchCat('containers', this)">
+        <span>📦 Контейнери</span>
+      </button>
+      <button class="cat-btn" onclick="switchCat('currency', this)">
+        <span>💰 Валюта</span>
+      </button>
+      <button class="cat-btn" onclick="switchCat('sapphires', this)">
+        <span>💠 Сапфіри та Коїни</span>
+      </button>
+      <button class="cat-btn" onclick="switchCat('other', this)">
+        <span>👽 Різне</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="main-header">
+      <div class="main-title">Купівля товарів</div>
+    </div>
+
+    <!-- PRIVILEGES -->
+    <div class="cat-panel active" id="cat-privileges">
+      <div class="products-grid">
+        <div class="product-card" onclick="openModal('Кастомна привілея', '237 грн')">
+          <div class="product-img">🦸</div>
+          <div class="product-info">
+            <div class="product-name">Кастомна привілея</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">237 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('Кастомна привілея','237 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('СТАЖЕР (Хелпер)', '279 грн')">
+          <div class="product-badge badge-orange">ХІТ</div>
+          <div class="product-img">👑</div>
+          <div class="product-info">
+            <div class="product-name">СТАЖЕР (Хелпер)</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">279 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('СТАЖЕР (Хелпер)','279 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('ETERNITY', '154 грн')">
+          <div class="product-img">✨</div>
+          <div class="product-info">
+            <div class="product-name">ETERNITY</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">154 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('ETERNITY','154 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('STINGER', '103 грн')">
+          <div class="product-img">🔥</div>
+          <div class="product-info">
+            <div class="product-name">STINGER</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">103 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('STINGER','103 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('DRAGON', '70 грн')">
+          <div class="product-img">🐉</div>
+          <div class="product-info">
+            <div class="product-name">DRAGON</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">70 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('DRAGON','70 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('KRAKEN', '57 грн')">
+          <div class="product-img">🦑</div>
+          <div class="product-info">
+            <div class="product-name">KRAKEN</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">57 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('KRAKEN','57 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('WITHER', '30 грн')">
+          <div class="product-img">💀</div>
+          <div class="product-info">
+            <div class="product-name">WITHER</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">30 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('WITHER','30 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('GHAST', '15 грн')">
+          <div class="product-img">👻</div>
+          <div class="product-info">
+            <div class="product-name">GHAST</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">15 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('GHAST','15 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('MUSTANG', '7 грн')">
+          <div class="product-img">🐎</div>
+          <div class="product-info">
+            <div class="product-name">MUSTANG</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">7 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('MUSTANG','7 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('GRIEFER', '4 грн')">
+          <div class="product-img">😈</div>
+          <div class="product-info">
+            <div class="product-name">GRIEFER</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">4 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('GRIEFER','4 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASES PRIV -->
+    <div class="cat-panel" id="cat-cases_priv">
+      <div class="products-grid">
+        <div class="product-card" onclick="openModal('10 кейсів із привілеєю', '49 грн')">
+          <div class="product-img">🎁</div>
+          <div class="product-info">
+            <div class="product-name">10 кейсів із привілеєю</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">49 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('10 кейсів із привілеєю','49 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('5 кейсів із привілеєю', '31 грн')">
+          <div class="product-img">🎁</div>
+          <div class="product-info">
+            <div class="product-name">5 кейсів із привілеєю</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">31 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('5 кейсів із привілеєю','31 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('3 кейси із привілеєю', '22 грн')">
+          <div class="product-img">🎁</div>
+          <div class="product-info">
+            <div class="product-name">3 кейси із привілеєю</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">22 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('3 кейси із привілеєю','22 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('2 кейси із привілеєю', '17 грн')">
+          <div class="product-img">🎁</div>
+          <div class="product-info">
+            <div class="product-name">2 кейси із привілеєю</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">17 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('2 кейси із привілеєю','17 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('1 кейс із привілеєю', '10 грн')">
+          <div class="product-img">🎁</div>
+          <div class="product-info">
+            <div class="product-name">1 кейс із привілеєю</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">10 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('1 кейс із привілеєю','10 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASES SAP -->
+    <div class="cat-panel" id="cat-cases_sap">
+      <div class="products-grid">
+        <div class="product-card" onclick="openModal('25 кейсів із сапфірами', '36 грн')">
+          <div class="product-img">💎</div>
+          <div class="product-info">
+            <div class="product-name">25 кейсів із сапфірами</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">36 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('25 кейсів із сапфірами','36 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('10 кейсів із сапфірами', '17 грн')">
+          <div class="product-img">💎</div>
+          <div class="product-info">
+            <div class="product-name">10 кейсів із сапфірами</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">17 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('10 кейсів із сапфірами','17 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('3 кейси із сапфірами', '8 грн')">
+          <div class="product-img">💎</div>
+          <div class="product-info">
+            <div class="product-name">3 кейси із сапфірами</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">8 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('3 кейси із сапфірами','8 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTAINERS -->
+    <div class="cat-panel" id="cat-containers">
+      <div class="products-grid">
+        <div class="product-card" onclick="openModal('Залізний контейнер', '14 грн')">
+          <div class="product-img">📦</div>
+          <div class="product-info">
+            <div class="product-name">Залізний контейнер</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">14 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('Залізний контейнер','14 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('Золотий контейнер', '28 грн')">
+          <div class="product-badge badge-orange">ТОП</div>
+          <div class="product-img">🏆</div>
+          <div class="product-info">
+            <div class="product-name">Золотий контейнер</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">28 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('Золотий контейнер','28 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('Діамантовий контейнер', '56 грн')">
+          <div class="product-badge badge-blue">VIP</div>
+          <div class="product-img">💠</div>
+          <div class="product-info">
+            <div class="product-name">Діамантовий контейнер</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">56 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('Діамантовий контейнер','56 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CURRENCY — ГОЛОВНА НОВА КАТЕГОРІЯ -->
+    <div class="cat-panel" id="cat-currency">
+      <div style="background:#fff7ed;border:1.5px solid #fed7aa;border-radius:12px;padding:12px 16px;margin-bottom:18px;font-size:0.82rem;font-weight:700;color:#9a3412;">
+        💡 Ігрова валюта нараховується вручну після перевірки оплати. Курс: <strong>100 000 000 (100кк) = 30 грн</strong>
+      </div>
+      <div class="products-grid">
+        <div class="product-card" onclick="openModal('100 000 000 (100кк)', '30 грн')">
+          <div class="product-badge badge-blue">СТАРТ</div>
+          <div class="product-img">🪙</div>
+          <div class="product-info">
+            <div class="product-name">100 000 000 (100кк)</div>
+            <div class="product-price-row">
+              <div><span class="price-from">ціна</span><div class="product-price">30 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('100 000 000 (100кк)','30 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('200 000 000 (200кк)', '60 грн')">
+          <div class="product-img">🪙</div>
+          <div class="product-info">
+            <div class="product-name">200 000 000 (200кк)</div>
+            <div class="product-price-row">
+              <div><span class="price-from">ціна</span><div class="product-price">60 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('200 000 000 (200кк)','60 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('500 000 000 (500кк)', '150 грн')">
+          <div class="product-badge badge-orange">ВИГОДА</div>
+          <div class="product-img">💰</div>
+          <div class="product-info">
+            <div class="product-name">500 000 000 (500кк)</div>
+            <div class="product-price-row">
+              <div><span class="price-from">ціна</span><div class="product-price">150 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('500 000 000 (500кк)','150 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('1 000 000 000 (1лям)', '300 грн')">
+          <div class="product-badge badge-red">1 ЛЯМ</div>
+          <div class="product-img">💎</div>
+          <div class="product-info">
+            <div class="product-name">1 000 000 000 (1лям)</div>
+            <div class="product-price-row">
+              <div><span class="price-from">ціна</span><div class="product-price">300 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('1 000 000 000 (1лям)','300 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('5 000 000 000 (5лямів)', '1 500 грн')">
+          <div class="product-badge badge-red">5 ЛЯМІВ</div>
+          <div class="product-img">🏦</div>
+          <div class="product-info">
+            <div class="product-name">5 000 000 000 (5лямів)</div>
+            <div class="product-price-row">
+              <div><span class="price-from">ціна</span><div class="product-price">1 500 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('5 000 000 000 (5лямів)','1 500 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('10 000 000 000 (10лямів)', '3 000 грн')">
+          <div class="product-badge badge-red">МАКС</div>
+          <div class="product-img">🤑</div>
+          <div class="product-info">
+            <div class="product-name">10 000 000 000 (10лямів)</div>
+            <div class="product-price-row">
+              <div><span class="price-from">ціна</span><div class="product-price">3 000 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('10 000 000 000 (10лямів)','3 000 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAPPHIRES -->
+    <div class="cat-panel" id="cat-sapphires">
+      <div class="products-grid">
+        <div class="product-card" onclick="openModal('25 000 сапфірів', '324 грн')">
+          <div class="product-badge badge-red">ВИГОДА 10%</div>
+          <div class="product-img">💎</div>
+          <div class="product-info">
+            <div class="product-name">25 000 сапфірів</div>
+            <div class="product-price-row">
+              <div><div class="product-price">324 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('25 000 сапфірів','324 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('12 500 сапфірів', '170 грн')">
+          <div class="product-badge badge-red">ВИГОДА 10%</div>
+          <div class="product-img">💎</div>
+          <div class="product-info">
+            <div class="product-name">12 500 сапфірів</div>
+            <div class="product-price-row">
+              <div><div class="product-price">170 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('12 500 сапфірів','170 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('7 500 сапфірів', '102 грн')">
+          <div class="product-img">💎</div>
+          <div class="product-info">
+            <div class="product-name">7 500 сапфірів</div>
+            <div class="product-price-row">
+              <div><div class="product-price">102 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('7 500 сапфірів','102 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('5 000 сапфірів', '69 грн')">
+          <div class="product-img">💎</div>
+          <div class="product-info">
+            <div class="product-name">5 000 сапфірів</div>
+            <div class="product-price-row">
+              <div><div class="product-price">69 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('5 000 сапфірів','69 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('2 500 сапфірів', '36 грн')">
+          <div class="product-img">💎</div>
+          <div class="product-info">
+            <div class="product-name">2 500 сапфірів</div>
+            <div class="product-price-row">
+              <div><div class="product-price">36 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('2 500 сапфірів','36 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('1 000 сапфірів', '16 грн')">
+          <div class="product-img">💎</div>
+          <div class="product-info">
+            <div class="product-name">1 000 сапфірів</div>
+            <div class="product-price-row">
+              <div><div class="product-price">16 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('1 000 сапфірів','16 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('Коїни', '1 грн')">
+          <div class="product-badge badge-orange">ВАША ЦІНА</div>
+          <div class="product-img">🪙</div>
+          <div class="product-info">
+            <div class="product-name">Коїни</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">1 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('Коїни','1 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OTHER -->
+    <div class="cat-panel" id="cat-other">
+      <div class="products-grid">
+        <div class="product-card" onclick="openModal('PREMIUM СТАТУС: 30 днів', '21 грн')">
+          <div class="product-img">⭐</div>
+          <div class="product-info">
+            <div class="product-name">PREMIUM СТАТУС: 30 днів</div>
+            <div class="product-price-row">
+              <div><div class="product-price">21 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('PREMIUM СТАТУС: 30 днів','21 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('Відновлення акаунта', '24 грн')">
+          <div class="product-img">🔑</div>
+          <div class="product-info">
+            <div class="product-name">Відновлення акаунта</div>
+            <div class="product-price-row">
+              <div><div class="product-price">24 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('Відновлення акаунта','24 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('Розбан', '20 грн')">
+          <div class="product-img">🔓</div>
+          <div class="product-info">
+            <div class="product-name">Розбан</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">20 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('Розбан','20 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('Розмут', '11 грн')">
+          <div class="product-img">🔔</div>
+          <div class="product-info">
+            <div class="product-name">Розмут</div>
+            <div class="product-price-row">
+              <div><span class="price-from">від</span><div class="product-price">11 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('Розмут','11 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card" onclick="openModal('Перенесення донату', '24 грн')">
+          <div class="product-img">📤</div>
+          <div class="product-info">
+            <div class="product-name">Перенесення донату</div>
+            <div class="product-price-row">
+              <div><div class="product-price">24 грн</div></div>
+              <button class="btn-buy" onclick="event.stopPropagation();openModal('Перенесення донату','24 грн')">Купити</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end .main -->
+</div><!-- end .layout -->
+
+<!-- PAYMENT MODAL -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-product-name" id="modalName">—</div>
+    <div class="modal-price-tag" id="modalPrice">—</div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">Реквізити для оплати через термінал</div>
+      <div class="req-row">
+        <div class="req-label">Номер картки</div>
+        <div class="req-val">
+          <span id="cardNum">0000 0000 0000 0000</span>
+          <button class="copy-btn" onclick="copyText('cardNum')">Копіювати</button>
+        </div>
+      </div>
+      <div class="req-row">
+        <div class="req-label">Номер телефону (СБП)</div>
+        <div class="req-val">
+          <span id="phoneNum">+38 (0XX) XXX-XX-XX</span>
+          <button class="copy-btn" onclick="copyText('phoneNum')">Копіювати</button>
+        </div>
+      </div>
+      <div class="req-row">
+        <div class="req-label">Отримувач</div>
+        <div class="req-val">
+          <span id="recipient">Іванов І.І.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Ваш нік у грі</label>
+      <input class="form-input" id="nickInput" type="text" placeholder="Введіть ваш нік...">
+    </div>
+
+    <div class="warning-box">
+      ⚠️ Після оплати через термінал — натисни кнопку нижче. Адміністратор отримає повідомлення і нарахує товар вручну протягом 5–15 хвилин.
+    </div>
+
+    <button class="btn-confirm" onclick="confirmPayment()">
+      ✅ Я ОПЛАТИВ — ПОВІДОМИТИ АДМІНА
+    </button>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="success-overlay" id="successOverlay" onclick="this.classList.remove('active')">
+  <div class="success-box">
+    <span class="success-emoji">🎉</span>
+    <div class="success-title">Заявку надіслано!</div>
+    <div class="success-text" id="successText">
+      Адміністратор отримав повідомлення в Telegram.<br>
+      Товар буде нараховано протягом 5–15 хвилин.
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <div>
+    <div class="footer-logo">
+      <div class="footer-logo-icon">🌍</div>
+      <div>
+        <div class="footer-brand">HolyShop</div>
+        <div class="footer-sub">Анархія 1.16.5</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copy">
+    © 2026 HolyShop — Всі права захищені. Не пов'язаний з MojangAB, всі кошти йдуть на розвиток проєкту.
+  </div>
+  <div class="footer-nav">
+    <h4>Навігація:</h4>
+    <a href="#">Умови оплати</a>
+    <a href="#">Правила сервера</a>
+    <a href="#">Підтримка</a>
+  </div>
+  <div class="footer-payments">
+    <h4>Ми приймаємо:</h4>
+    <p>Банківські картки (Україна)<br>Термінал · Переказ</p>
+  </div>
+</footer>
+
+<script>
+// ╔══════════════════════════════════════════════╗
+// ║           НАЛАШТУВАННЯ — ЗМІНИ ПІД СЕБЕ     ║
+// ╚══════════════════════════════════════════════╝
+const CONFIG = {
+  botToken:  "8692196625:AAHFpCn96zrETvZHoEyFH6iErocwq9dGrPY",    // від @BotFather
+  chatId:    "8051518893",      // дізнатись через @userinfobot
+  cardNumber: "5355 2802 2387 2852",
+  phone:      "+1 (769) 267-6034",
+  recipientName: "Іванов Іван І.",
+};
+
+// Заповнюємо реквізити
+document.getElementById('cardNum').textContent = CONFIG.cardNumber;
+document.getElementById('phoneNum').textContent = CONFIG.phone;
+document.getElementById('recipient').textContent = CONFIG.recipientName;
+
+// ─── КАТЕГОРІЇ ───
+function switchCat(catId, btn) {
+  document.querySelectorAll('.cat-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('cat-' + catId).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ─── СЕРВЕР ───
+function selectServer(btn, name) {
+  document.querySelectorAll('.server-btn').forEach(b => {
+    b.classList.remove('active');
+    b.classList.add('inactive');
+  });
+  btn.classList.add('active');
+  btn.classList.remove('inactive');
+}
+
+// ─── МОДАЛ ───
+let currentProduct = { name: '', price: '' };
+
+function openModal(name, price) {
+  currentProduct = { name, price };
+  document.getElementById('modalName').textContent = name;
+  document.getElementById('modalPrice').textContent = price;
+  document.getElementById('nickInput').value = '';
+  document.getElementById('paymentModal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('paymentModal').classList.remove('active');
+}
+
+document.getElementById('paymentModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ─── ПІДТВЕРДЖЕННЯ ───
+async function confirmPayment() {
+  const nick = document.getElementById('nickInput').value.trim();
+  if (!nick) {
+    document.getElementById('nickInput').style.borderColor = '#ef4444';
+    document.getElementById('nickInput').focus();
+    setTimeout(() => document.getElementById('nickInput').style.borderColor = '', 2000);
+    return;
+  }
+
+  const msg =
+`🛒 НОВА ПОКУПКА
+
+👤 Нік: ${nick}
+📦 Товар: ${currentProduct.name}
+💰 Сума: ${currentProduct.price}
+🖥 Оплата: Термінал / Картка
+
+⚡️ Нарахувати товар гравцю!`;
+
+  try {
+    await fetch(`https://api.telegram.org/bot${CONFIG.botToken}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: CONFIG.chatId, text: msg })
+    });
+  } catch(e) { console.warn('TG error', e); }
+
+  closeModal();
+  document.getElementById('successText').innerHTML =
+    `Адміністратор отримав повідомлення в Telegram.<br>
+     Товар буде нараховано протягом 5–15 хвилин.<br><br>
+     <strong>Нік:</strong> ${nick}<br>
+     <strong>Товар:</strong> ${currentProduct.name}<br>
+     <strong>Сума:</strong> ${currentProduct.price}`;
+  document.getElementById('successOverlay').classList.add('active');
+
+  setTimeout(() => {
+    document.getElementById('successOverlay').classList.remove('active');
+  }, 5000);
+}
+
+// ─── КОПІЮВАННЯ ───
+function copyText(elId) {
+  const t = document.getElementById(elId).textContent.trim();
+  navigator.clipboard.writeText(t).then(() => showToast('Скопійовано: ' + t));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
